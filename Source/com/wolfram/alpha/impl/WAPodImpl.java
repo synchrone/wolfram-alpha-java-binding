@@ -104,7 +104,7 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
                 // Program defensively and don't assume that every element in a <states> is a <state>
                 // or <statelist>, although we have no intention of making such a change in the API output.
                 int numSubElements = subElements.getLength();
-                List<Node> stateAndStatelistNodes = new ArrayList<Node>(numSubElements);
+                List stateAndStatelistNodes = new ArrayList(numSubElements);
                 for (int i = 0; i < numSubElements; i++) {
                     Node child = subElements.item(i);
                     String name = child.getNodeName();
@@ -128,7 +128,7 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
                 // Program defensively and don't assume that every element in an <infos> is an <info>,
                 // although we have no intention of making such a change in the API output.
                 int numSubElements = subElements.getLength();
-                List<Node> infoNodes = new ArrayList<Node>(numSubElements);
+                List infoNodes = new ArrayList(numSubElements);
                 for (int i = 0; i < numSubElements; i++) {
                     Node child = subElements.item(i);
                     String name = child.getNodeName();
@@ -149,7 +149,7 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
                 // Program defensively and don't assume that every element in a <sounds> is an <sound>,
                 // although we have no intention of making such a change in the API output.
                 int numSubElements = subElements.getLength();
-                List<Node> soundNodes = new ArrayList<Node>(numSubElements);
+                List soundNodes = new ArrayList(numSubElements);
                 for (int i = 0; i < numSubElements; i++) {
                     Node child = subElements.item(i);
                     String name = child.getNodeName();
@@ -225,7 +225,9 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
         synchronized (this) {
             sps = subpods;
         }
-        for (WASubpodImpl sub : sps) {
+        
+        for (int i = 0; i < sps.length; i++) {
+        	WASubpodImpl sub = sps[i];
             sub.acquireImage();
         }
     }
@@ -248,7 +250,7 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
         }
         if (url != null) {
             try {
-                URLFetcher fetcher = new URLFetcher(new URL(url), null, http, null);
+                URLFetcher fetcher = new URLFetcher(new URL(url), null, http);
                 fetcher.fetch();
                 if (fetcher.wasCancelled())  
                     throw new WAException("Download of url " + asyncURL + " was cancelled");
@@ -308,7 +310,6 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
     // This is not a particularly good hash function, but it doesn't need to be. The only property
     // that really matters is that its value changes when the content of this object changes.
     
-    @Override
     public synchronized int hashCode() {
         
         int result = 17;
@@ -325,10 +326,17 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
             result = 37*result + asyncException.hashCode();
         if (userData != null)
             result = 37*result + userData.hashCode();
-        for (WASubpod subpod : subpods)
-            result = 37*result + subpod.hashCode();
-        for (WASound sound : sounds)
-            result = 37*result + sound.hashCode();
+        
+        for (int i = 0; i < subpods.length; i++){
+        	WASubpod subpod = subpods[i];
+        	result = 37*result + subpod.hashCode();
+        }
+            
+    	for (int i = 0; i < sounds.length; i++){
+    		WASound sound = sounds[i];
+        	result = 37*result + sound.hashCode();
+        }
+            
         return result;
     }
     
@@ -337,8 +345,8 @@ public class WAPodImpl implements WAPod, Visitable, Serializable {
     
     public void accept(Visitor v) {
         v.visit(this);
-        for (WASubpod subpod : subpods)
-            subpod.accept(v);
+        for (int i = 0; i < subpods.length; i++)
+            subpods[i].accept(v);
     }
 
 }

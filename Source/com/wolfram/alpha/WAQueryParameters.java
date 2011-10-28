@@ -118,9 +118,9 @@ public interface WAQueryParameters {
     
     void setSignature(String sig);
     
-    List<String[]> getExtraParams();
+    List getExtraParams();
     
-    List<String[]> getParameters();
+    List getParameters();
     
     //////////////////  From URL  ////////////////
     

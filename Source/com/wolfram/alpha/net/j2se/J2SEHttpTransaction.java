@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.Proxy;
 import java.net.URL;
 
-import com.wolfram.alpha.net.ProxySettings;
 import com.wolfram.alpha.net.WAHttpException;
 import com.wolfram.alpha.net.impl.HttpTransaction;
 
@@ -22,13 +20,11 @@ public class J2SEHttpTransaction implements HttpTransaction {
     private HttpURLConnection conn;
     private URL url;
     private String userAgent;
-    private ProxySettings proxySettings;
     
     
-    J2SEHttpTransaction(URL url, ProxySettings proxySettings, String userAgent) {
+    J2SEHttpTransaction(URL url,  String userAgent) {
         this.url = url;
         this.userAgent = userAgent;
-        this.proxySettings = proxySettings != null ? proxySettings : ProxySettings.getInstance();
     }
     
 
@@ -42,17 +38,13 @@ public class J2SEHttpTransaction implements HttpTransaction {
     public void execute() throws WAHttpException {
 
         try {
-            Proxy proxy = proxySettings.getProxyForJavaNet(url.toString());
-            if (proxy != null) {
-                conn = (HttpURLConnection) url.openConnection(proxy);
-            } else {
-                conn = (HttpURLConnection) url.openConnection();
-            }
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             
             // TODO: This value
-            conn.setReadTimeout(15*1000);
+            //conn.setReadTimeout(15*1000);
             conn.connect();
+            
             
             int statusCode = conn.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK) {

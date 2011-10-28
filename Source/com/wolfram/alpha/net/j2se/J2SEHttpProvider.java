@@ -8,7 +8,6 @@ import java.net.URL;
 
 import com.wolfram.alpha.net.impl.HttpTransaction;
 import com.wolfram.alpha.net.HttpProvider;
-import com.wolfram.alpha.net.ProxySettings;
 
 
 
@@ -18,8 +17,8 @@ public class J2SEHttpProvider implements HttpProvider {
     private String userAgent = "Wolfram|Alpha Java Binding 1.1";
         
     
-    public HttpTransaction createHttpTransaction(URL url, ProxySettings proxySettings) {
-        return new J2SEHttpTransaction(url, proxySettings, userAgent);
+    public HttpTransaction createHttpTransaction(URL url) {
+        return new J2SEHttpTransaction(url, userAgent);
     }
 
 

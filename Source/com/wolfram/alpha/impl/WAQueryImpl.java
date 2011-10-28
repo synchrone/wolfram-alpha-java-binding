@@ -32,8 +32,10 @@ public class WAQueryImpl extends WAQueryParametersImpl implements WAQuery, Seria
         
         StringBuffer s = new StringBuffer(600);
         
-        List<String[]> params = getParameters();
-        for (String[] param : params) {
+        List params = getParameters();
+        Object[] paramsArr = params.toArray();
+        for (int i = 0; i < paramsArr.length; i++) {
+        	String[] param = (String[])paramsArr[i];
             s.append("&");
             s.append(param[0]);
             s.append("=");

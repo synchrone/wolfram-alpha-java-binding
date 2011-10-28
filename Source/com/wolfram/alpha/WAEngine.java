@@ -120,7 +120,7 @@ public class WAEngine extends WAQueryParametersImpl {
             throw new WAException(e);
         }
         
-        URLFetcher fetcher = new URLFetcher(url, null, http, null);
+        URLFetcher fetcher = new URLFetcher(url, null, http);
         fetcher.fetch();
         if (fetcher.wasCancelled())  
             throw new WAException("Download of url " + url + " was cancelled");
@@ -140,7 +140,7 @@ public class WAEngine extends WAQueryParametersImpl {
             throw new WAException(e);
         }
         
-        URLFetcher fetcher = new URLFetcher(url, null, http, null);
+        URLFetcher fetcher = new URLFetcher(url, null, http);
         fetcher.fetch();
         if (fetcher.wasCancelled())  
             throw new WAException("Download of url " + url + " was cancelled");

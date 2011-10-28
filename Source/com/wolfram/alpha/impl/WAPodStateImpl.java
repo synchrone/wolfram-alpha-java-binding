@@ -85,7 +85,7 @@ public class WAPodStateImpl implements WAPodState, Visitable, Serializable {
             // although we have no intention of making such a change in the API output.
             NodeList states = thisElement.getChildNodes();
             int numStates = states.getLength();
-            List<Node> stateElements = new ArrayList<Node>(numStates);
+            List stateElements = new ArrayList(numStates);
             for (int i = 0; i < numStates; i++) {
                 Node stateNode = states.item(i);
                 if ("state".equals(stateNode.getNodeName()))
@@ -159,8 +159,8 @@ public class WAPodStateImpl implements WAPodState, Visitable, Serializable {
     private void computeID() {
         // The id is basically a hash of the input strings.
         id = 17;
-        for (String s : inputs)
-            id += 37*id + s.hashCode();
+        for (int i = 0; i < inputs.length; i++)
+            id += 37*id + inputs[i].hashCode();
     }
     
     ///////////////////////////  Visitor interface  ////////////////////////////

@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.wolfram.alpha.WAException;
 import com.wolfram.alpha.net.impl.HttpTransaction;
@@ -22,7 +23,6 @@ public class URLFetcher {
     HttpProvider http;
     private URL url;
     private String outFile;
-    private ProxySettings proxySettings;
     
     // These are volatile because this class is typically run on one thread and
     // queried on another.
@@ -44,12 +44,11 @@ public class URLFetcher {
     
 
     // TODO: outFile = null means get data as string. Improve getResponseString() to be safer for large responses.
-    public URLFetcher(URL url, String outFile, HttpProvider http, ProxySettings proxySettings) {
+    public URLFetcher(URL url, String outFile, HttpProvider http) {
 
         this.url = url;
         this.outFile = outFile;
         this.http = http;
-        this.proxySettings = proxySettings;
     }
 
 
@@ -132,7 +131,7 @@ public class URLFetcher {
             boolean useFile = outFile != null;
             
             try {
-                trans = http.createHttpTransaction(url, proxySettings);
+                trans = http.createHttpTransaction(url);
                 trans.execute();                   
                 long contentLength = trans.getContentLength();
                 charSet = trans.getCharSet();
@@ -190,7 +189,7 @@ public class URLFetcher {
             }
                         
             if (exception != null) {
-                logger.warning("Exception downloading URL " + url + ". " + exception);
+                logger.warn("Exception downloading URL " + url + ". " + exception);
             }
             
             if (wasCancelled)

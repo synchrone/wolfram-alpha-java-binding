@@ -36,7 +36,7 @@ public class WAWarningImpl implements WAWarning, Visitable, Serializable {
         
         type = thisElement.getNodeName();
         text = thisElement.getAttribute("text");
-        ArrayList<String[]> attrPairs = new ArrayList<String[]>();
+        ArrayList attrPairs = new ArrayList();
         NamedNodeMap attrs = thisElement.getAttributes();
         int numAttrs = attrs.getLength();
         for (int i = 0; i < numAttrs; i++) {
@@ -48,7 +48,7 @@ public class WAWarningImpl implements WAWarning, Visitable, Serializable {
             }
         }
         if (attrPairs.size() > 0)
-            attributes = attrPairs.toArray(new String[attrPairs.size()][2]);
+            attributes = (String[][]) attrPairs.toArray(new String[attrPairs.size()][2]);
     }
     
     

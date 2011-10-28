@@ -5,8 +5,6 @@
 package com.wolfram.alpha.net;
 
 
-import org.apache.http.HttpStatus;
-
 
 /**
  * Either has httpStatusCode member set to a value other than HttpStatus.SC_OK or wraps another
@@ -17,7 +15,7 @@ import org.apache.http.HttpStatus;
  */
 public class WAHttpException extends Exception {
 
-    public int httpStatusCode = HttpStatus.SC_OK;
+    public int httpStatusCode = 200;
     
     private static final long serialVersionUID = 59955069668288618L;
 
@@ -36,7 +34,7 @@ public class WAHttpException extends Exception {
 
     
     public String getMessage() {
-        if (httpStatusCode != HttpStatus.SC_OK) {
+        if (httpStatusCode != 200) {
             return statusCodeToMessageString(httpStatusCode);
         } else {
             return super.getMessage();

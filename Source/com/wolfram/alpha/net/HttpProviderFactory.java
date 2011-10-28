@@ -4,7 +4,8 @@
  */
 package com.wolfram.alpha.net;
 
-import com.wolfram.alpha.net.apache.ApacheHttpProvider;
+import com.wolfram.alpha.net.j2se.J2SEHttpProvider;
+
 
 
 public class HttpProviderFactory {
@@ -15,7 +16,7 @@ public class HttpProviderFactory {
     // Return singleton instance (at least, a singleton for each type of provider).
     public static synchronized HttpProvider getDefaultHttpProvider() {
         if (provider == null)
-            provider = new ApacheHttpProvider();
+            provider = new J2SEHttpProvider();
         return provider;
     }
 

@@ -14,7 +14,7 @@ import com.wolfram.alpha.net.impl.HttpTransaction;
 
 public interface HttpProvider {
 
-    HttpTransaction createHttpTransaction(URL url, ProxySettings proxySettings);
+    HttpTransaction createHttpTransaction(URL url);
     
     // TODO: Don't like this. If style is to create one provider and use it always, then having a setter
     // can change state of all uses of this provider in other threads. Better to have a factory that

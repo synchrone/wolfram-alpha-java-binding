@@ -115,7 +115,7 @@ public class WAImageImpl implements WAImage, Visitable, Serializable {
                 else 
                     suffix = ".tmp";
                 String outFile = File.createTempFile("WAImage", suffix, tempDir).getAbsolutePath();
-                URLFetcher fetcher = new URLFetcher(new URL(url), outFile, http, null);
+                URLFetcher fetcher = new URLFetcher(new URL(url), outFile, http);
                 fetcher.fetch();
                 setFile(fetcher.getFile());
             } catch (Exception e) {

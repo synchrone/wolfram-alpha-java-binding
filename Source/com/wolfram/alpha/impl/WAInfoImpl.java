@@ -36,7 +36,7 @@ public class WAInfoImpl implements WAInfo, Serializable {
         
         NodeList subElements = thisElement.getChildNodes();
         int numSubElements = subElements.getLength();
-        List<Visitable> contentList = new ArrayList<Visitable>(numSubElements);
+        List contentList = new ArrayList(numSubElements);
         for (int i = 0; i < numSubElements; i++) {
             Node child = subElements.item(i);
             String name = child.getNodeName();
@@ -48,7 +48,7 @@ public class WAInfoImpl implements WAInfo, Serializable {
                 contentList.add(new WAUnitsImpl((Element) child, http, tempDir));
             }
         }
-        contentElements = contentList.toArray(new Visitable[contentList.size()]);
+        contentElements = (Visitable[]) contentList.toArray(new Visitable[contentList.size()]);
     }
     
     

@@ -225,9 +225,9 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
     public synchronized void acquireImages() {
         
         if (!imagesAcquired) {
-            for (WAPodImpl pod : pods) {
+            for (int i = 0 ; i < pods.length; i++) {
                 try {
-                    pod.acquireImages();
+                	pods[i].acquireImages();
                 } catch (WAException e) {
                     // What to do here? Need to finish getting all even if there is an exception.
                 }
@@ -240,7 +240,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
     public void finishAsync() {
         
         acquireImages();
-        List<Thread> runningThreads = new ArrayList<Thread>(pods.length);
+        List runningThreads = new ArrayList(pods.length);
         WAPod[] pods = getPods();
         for (int i = 0; i < pods.length; i++) {
             final WAPod pod = pods[i];
@@ -258,9 +258,10 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 runningThreads.add(t);
             }
         }
-        for (Thread t : runningThreads) {
+        Thread[] runningThreadsArr = (Thread[])runningThreads.toArray();
+        for (int i = 0; i < runningThreadsArr.length; i++) {
             try {
-                t.join();
+            	runningThreadsArr[i].join();
             } catch (InterruptedException e) {
                 // TODO: What here?
             }
@@ -367,8 +368,8 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 parseTiming = Double.parseDouble(thisElement.getAttribute("timing"));
             } catch (NumberFormatException e) {}
             version = thisElement.getAttribute("version");
-            dataTypes = thisElement.getAttribute("datatypes").split(",");
-            timedoutScanners = thisElement.getAttribute("timedout").split(",");
+            dataTypes = KString.split(thisElement.getAttribute("datatypes"),',');
+            timedoutScanners = KString.split(thisElement.getAttribute("timedout"),',');
             recalcURL = thisElement.getAttribute("recalculate");
             
             NodeList podElements = thisElement.getElementsByTagName("pod");
@@ -390,7 +391,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 Element warningsElement = (Element) warningsElements.item(0);
                 NodeList children = warningsElement.getChildNodes();
                 int numNodes = children.getLength();
-                ArrayList<Element> warningElements = new ArrayList<Element>();
+                ArrayList warningElements = new ArrayList();
                 for (int i = 0; i < numNodes; i++) {
                     Node child = children.item(i);
                     if (child instanceof Element)
@@ -399,7 +400,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 int numWarnings = warningElements.size();
                 warnings = new WAWarningImpl[numWarnings];
                 for (int i = 0; i < numWarnings; i++) {
-                    Element warningElement = warningElements.get(i);
+                    Element warningElement = (Element) warningElements.get(i);
                     if ("reinterpret".equals(warningElement.getNodeName()))
                         warnings[i] = new WAReinterpretWarningImpl(warningElement);
                     else
@@ -414,7 +415,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 Element tipsElement = (Element) tipsElements.item(0);
                 NodeList children = tipsElement.getChildNodes();
                 int numNodes = children.getLength();
-                ArrayList<Element> tipElements = new ArrayList<Element>();
+                ArrayList tipElements = new ArrayList();
                 for (int i = 0; i < numNodes; i++) {
                     Node child = children.item(i);
                     if (child instanceof Element)
@@ -423,7 +424,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 int numTips = tipElements.size();
                 splatTips = new String[numTips];
                 for (int i = 0; i < numTips; i++)
-                    splatTips[i] = new String(tipElements.get(i).getAttribute("text"));
+                    splatTips[i] = new String(((Element)tipElements.get(i)).getAttribute("text"));
             }
             
             NodeList relatedLinkElements = thisElement.getElementsByTagName("sidebarlink");
@@ -467,7 +468,7 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
                 Element sourcesElement = (Element) sourcesElements.item(0);
                 NodeList children = sourcesElement.getChildNodes();
                 int numNodes = children.getLength();
-                ArrayList<Element> sourceElements = new ArrayList<Element>();
+                ArrayList sourceElements = new ArrayList();
                 for (int i = 0; i < numNodes; i++) {
                     Node child = children.item(i);
                     if (child instanceof Element)
@@ -497,8 +498,8 @@ public class WAQueryResultImpl implements WAQueryResult, Visitable, Serializable
     public void accept(Visitor v) {
         
         v.visit(this);
-        for (WAPod pod : pods) {
-            pod.accept(v);
+        for (int i = 0; i < pods.length; i++) {
+        	pods[i].accept(v);
         }
     }
 

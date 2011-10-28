@@ -45,7 +45,7 @@ public class WASubpodImpl implements WASubpod, Visitable, Serializable {
         
         NodeList subElements = thisElement.getChildNodes();
         int numSubElements = subElements.getLength();
-        List<Visitable> contentList = new ArrayList<Visitable>(numSubElements);
+        List contentList = new ArrayList(numSubElements);
         for (int i = 0; i < numSubElements; i++) {
             Node child = subElements.item(i);
             String name = child.getNodeName();
@@ -55,7 +55,7 @@ public class WASubpodImpl implements WASubpod, Visitable, Serializable {
                 contentList.add(new WAImageImpl((Element) child, http, tempDir));
             }
         }
-        contentElements = contentList.toArray(new Visitable[contentList.size()]);
+        contentElements = (Visitable[]) contentList.toArray(new Visitable[contentList.size()]);
     }
     
     
@@ -92,9 +92,9 @@ public class WASubpodImpl implements WASubpod, Visitable, Serializable {
         
         int result = 17;
         result = 37*result + title.hashCode();
-        for (Object obj : contentElements) {
-            if (obj instanceof WAImageImpl) {
-                result = 37*result + obj.hashCode();
+        for (int i = 0; i < contentElements.length; i++) {
+            if (contentElements[i] instanceof WAImageImpl) {
+                result = 37*result + contentElements[i].hashCode();
                 break;
             }
         }
@@ -112,9 +112,9 @@ public class WASubpodImpl implements WASubpod, Visitable, Serializable {
         // never retrieve new content from the web.
         // The only synchronization needed here is that imageAcquired is volatile.
         if (!imageAcquired && http != null) {
-            for (Object elem : contentElements) {
-                if (elem instanceof WAImageImpl) {
-                    WAImageImpl image = (WAImageImpl) elem;
+            for (int i = 0; i < contentElements.length; i++) {
+                if (contentElements[i] instanceof WAImageImpl) {
+                    WAImageImpl image = (WAImageImpl) contentElements[i];
                     image.acquireImage();
                     break;
                 }

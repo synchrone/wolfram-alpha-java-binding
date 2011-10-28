@@ -86,7 +86,7 @@ public class WASoundImpl implements WASound, Visitable, Serializable {
                     else 
                         suffix = ".tmp";
                     String outFile = File.createTempFile("WASound", suffix, tempDir).getAbsolutePath();
-                    URLFetcher fetcher = new URLFetcher(new URL(url), outFile, http, null);
+                    URLFetcher fetcher = new URLFetcher(new URL(url), outFile, http);
                     fetcher.fetch();
                     setFile(fetcher.getFile());
                 } catch (Exception e) {
