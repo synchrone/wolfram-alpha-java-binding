@@ -8,6 +8,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
 import com.wolfram.alpha.impl.WAQueryImpl;
 import com.wolfram.alpha.impl.WAQueryParametersImpl;
 import com.wolfram.alpha.impl.WAQueryResultImpl;
@@ -29,7 +31,6 @@ public class WAEngine extends WAQueryParametersImpl {
 
     HttpProvider http;
     File downloadDir;
-    
     // TODO. These ctors are a total mess. Cut them down and add setters.
     
     public WAEngine() {
@@ -121,7 +122,9 @@ public class WAEngine extends WAQueryParametersImpl {
         }
         
         URLFetcher fetcher = new URLFetcher(url, null, http);
+        Logger.getLogger("WAEngine").debug(url);
         fetcher.fetch();
+        
         if (fetcher.wasCancelled())  
             throw new WAException("Download of url " + url + " was cancelled");
         if (fetcher.getException() != null)

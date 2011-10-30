@@ -315,9 +315,8 @@ public class WAQueryParametersImpl implements WAQueryParameters, Serializable {
     public int[] getPodIndexes() {
         int[] result = new int[podIndices.size()];
         int i = 0;
-        Integer[] podIndicesArr = (Integer[])podIndices.toArray();
-        for (int j = 0; j < podIndicesArr.length; j++) {
-            result[i++] = podIndicesArr[j].intValue();
+        for (int j = 0; j < podIndices.size(); j++) {
+            result[i++] = ((Integer) podIndices.get(i)).intValue();
         }
         return result;
     }
@@ -585,52 +584,45 @@ public class WAQueryParametersImpl implements WAQueryParameters, Serializable {
             param[1] = "true";
             params.add(param);
         }
-        String[] podTitlesArr = (String[])podTitles.toArray();
-        for (int i = 0; i < podTitlesArr.length; i++) {
+        for (int i = 0; i < podTitles.size(); i++) {
             param = new String[2];
             param[0] = "podtitle";
-            param[1] = encode(podTitlesArr[i]);
+            param[1] = encode(podTitles.get(i).toString());
             params.add(param);
         }
-        String[] podScannersArr = (String[])podScanners.toArray();
-        for (int i = 0; i < podScannersArr.length; i++) {
+        for (int i = 0; i < podScanners.size(); i++) {
             param = new String[2];
             param[0] = "scanner";
-            param[1] = podScannersArr[i];
+            param[1] = podScanners.get(i).toString();
             params.add(param);
         }
-        Integer[] podIndicesArr = (Integer[])podIndices.toArray();
-        for (int i = 0; i < podIndicesArr.length; i++) {
+        for (int i = 0; i < podIndices.size(); i++) {
             param = new String[2];
             param[0] = "podindex";
-            param[1] = podIndicesArr[i].toString();
+            param[1] = podIndices.get(i).toString();
             params.add(param);
         }
-        String[] includePodIDsArr = (String[])includePodIDs.toArray();
-        for (int i = 0; i < includePodIDsArr.length; i++) {
+        for (int i = 0; i < includePodIDs.size(); i++) {
             param = new String[2];
             param[0] = "includepodid";
-            param[1] = encode(includePodIDsArr[i]);
+            param[1] = encode(includePodIDs.get(i).toString());
             params.add(param);
         }
-        String[] excludePodIDsArr = (String[])excludePodIDs.toArray();
-        for (int i = 0; i < excludePodIDsArr.length; i++) {
+        for (int i = 0; i < excludePodIDs.size(); i++) {
             param = new String[2];
             param[0] = "excludepodid";
-            param[1] = encode(excludePodIDsArr[i]);
+            param[1] = encode(excludePodIDs.get(i).toString());
             params.add(param);
         }
-        String[] assumptionsArr = (String[])assumptions.toArray();
-        for (int i = 0; i < assumptionsArr.length; i++) {
+        for (int i = 0; i < assumptions.size(); i++) {
             param = new String[2];
             param[0] = "assumption";
             // Assumption strings are already encoded in the output, so not encoded here.
-            param[1] = assumptionsArr[i];
+            param[1] = assumptions.get(i).toString();
             params.add(param);
         }
-        WAPodState[] podStatesArr = (WAPodState[])podStates.toArray();
-        for (int i = 0; i < podStatesArr.length; i++) {
-        	WAPodState p = podStatesArr[i];
+        for (int i = 0; i < podStates.size(); i++) {
+        	WAPodState p = (WAPodState)podStates.get(i);
             param = new String[2];
             param[0] = "podstate";
             param[1] = encode(p.getInputs()[p.getCurrentIndex()]);
@@ -661,9 +653,8 @@ public class WAQueryParametersImpl implements WAQueryParameters, Serializable {
             param[1] = Double.toString(magnification);
             params.add(param);
         }
-        String[][] extraParamsArr = (String[][])extraParams.toArray();
-        for (int i = 0; i < extraParamsArr.length; i++) {
-        	String[] paramPair = extraParamsArr[i];
+        for (int i = 0; i < extraParams.size(); i++) {
+        	String[] paramPair = (String[])extraParams.get(i);
         	param = new String[2];
             param[0] = paramPair[0];
             param[1] = paramPair[1];
@@ -734,38 +725,31 @@ public class WAQueryParametersImpl implements WAQueryParameters, Serializable {
         if (allowTranslation != null) setAllowTranslation(new Boolean(allowTranslation.equals("true")));
         List podTitles = (List) parmsMap.get("podtitle");
         if (podTitles != null){
-        	String[] podTitlesArr = (String[])podTitles.toArray();
-            for (int i = 0; i < podTitlesArr.length; i++) addPodTitle(podTitlesArr[i]);
+            for (int i = 0; i < podTitles.size(); i++) addPodTitle((String) podTitles.get(i));
         }
         List podScanners = (List) parmsMap.get("podscanner");
         if (podScanners != null){
-        	String[] podScannersArr = (String[])podScanners.toArray();
-            for (int i = 0; i < podScannersArr.length; i++) addPodScanner(podScannersArr[i]);
+            for (int i = 0; i < podScanners.size(); i++) addPodScanner((String) podScanners.get(i));
         }
         List podIndexes = (List) parmsMap.get("podindex");
         if (podIndexes != null){
-        	String[] podIndexesArr = (String[])podIndexes.toArray();
-            for (int i = 0; i < podIndexesArr.length; i++) addPodIndex(Integer.parseInt(podIndexesArr[i]));
+            for (int i = 0; i < podIndexes.size(); i++) addPodIndex(Integer.parseInt((String) podIndexes.get(i)));
         }
         List includePods = (List) parmsMap.get("includepodid");
         if (includePods != null){
-        	String[] includePodsArr = (String[])includePods.toArray();
-            for (int i = 0; i < includePodsArr.length; i++) addIncludePodID(includePodsArr[i]);
+            for (int i = 0; i < includePods.size(); i++) addIncludePodID((String) includePods.get(i));
         }
         List excludePods = (List) parmsMap.get("excludepodid");
         if (excludePods != null){
-        	String[] excludePodsArr = (String[])excludePods.toArray();
-            for (int i = 0; i < excludePodsArr.length; i++) addExcludePodID(excludePodsArr[i]);
+            for (int i = 0; i < excludePods.size(); i++) addExcludePodID((String) excludePods.get(i));
         }
         List assumptions = (List) parmsMap.get("assumption");
         if (assumptions != null){
-        	String[] assumptionsArr = (String[])assumptions.toArray();
-            for (int i = 0; i < assumptionsArr.length; i++) addAssumption(assumptionsArr[i]);
+            for (int i = 0; i < assumptions.size(); i++) addAssumption((String) assumptions.get(i));
         }
         List podStates = (List) parmsMap.get("podstate");
         if (podStates != null){
-        	String[] podStatesArr = (String[])podStates.toArray();
-            for (int i = 0; i < podStatesArr.length; i++) addPodState(podStatesArr[i]);
+            for (int i = 0; i < podStates.size(); i++) addPodState((String) podStates.get(i));
         }
         List relatedLinks = (List) parmsMap.get("sidebarlinks");
         if (relatedLinks != null) setRelatedLinks(relatedLinks.get(0).equals("true"));
@@ -811,10 +795,9 @@ public class WAQueryParametersImpl implements WAQueryParameters, Serializable {
         try {
             url.append(URLEncoder.encode(input, "UTF-8"));
         } catch (UnsupportedEncodingException e) {}
-        String[] assumptionsArr = getAssumptions();
-        for (int i = 0; i < assumptionsArr.length; i++) {
+        for (int i = 0; i < assumptions.size(); i++) {
             url.append("&a=");
-            url.append(assumptionsArr[i]);
+            url.append(assumptions.get(i));
         }
         return url.toString();        
     }
